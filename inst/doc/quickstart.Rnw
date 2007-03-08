@@ -1,0 +1,223 @@
+% NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
+% likely to be overwritten.
+%
+% \VignetteIndexEntry{CALIB Overview}
+% \VignetteDepends{CALIB}
+% \VignetteKeywords{CALIB,Calibration,Preprocessing}
+% \VignettePackage{CALIB}
+
+\documentclass[11pt]{article}
+
+\usepackage{Sweave,amsmath,epsfig,fullpage,hyperref}
+
+\parindent 0in
+\textwidth=6.2in
+\textheight=8.5in
+\oddsidemargin=0.2in
+\evensidemargin=0.2in
+\headheight=0in
+\headsep=0in
+
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\begin{document}
+
+\title{\bf Quick start guide for CALIB package}
+
+\author{Hui Zhao \\ CMPG, K.U.Leuven, Belgium \and Kristof Engelen \\ CMPG, K.U.Leuven, Belgium \and Bart DeMoor \\ ESAT-SCD, K.U.Leuven, Belgium  \and Kathleen Marchal \\ CMPG, K.U.Leuven, Belgium}
+
+\date {July, 2006}
+
+\maketitle
+
+\tableofcontents
+
+\section{Overview}
+
+The \Rpackage{CALIB} package provides a novel normalization method for normalizing spotted microarray data. The methodology is based on a physically motivated model, consisting of two major components:
+\begin{itemize}
+\item hybridization reaction.
+\item dye saturation function.
+\end{itemize}
+Spike-based curves are used to estimate absolute transcript levels for each combination of a gene and a tested biological condition, irrespective of the number of microarray slides or replicate spots on one slide.~\cite{CalibMethod}
+The \Rpackage{CALIB} package allows normalizing spotted microarray data, using the method methods mentioned above and also provides different visualization functions that allow quality control and data exploration. This docutment provides a brief introduction of data classes used in this package and a simple work flow of this package. The work flow contains the following procedure:
+\begin{itemize}
+\item Read in microarray data.
+\item Perform simple diagnostic functions to access quality of the spikes.
+\item Estimate parameters of the calibration model.
+\item Normalization by using the calibation model.
+\end{itemize}
+
+More detailed explanation is available in the other online document of the package called {\tt readme.pdf}. To reach this readme file, you need to install the \Rpackage{CALIB} package. If you've installed the package, you can type 
+
+<<eval=FALSE>>=
+library(CALIB)
+calibReadMe()
+@ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Classes}
+Three data classes are used for storing data in the \Rpackage{CALIB} package.
+
+\begin{description}
+
+\item \textbf{RGList\_CALIB}: A list used to store raw measurement data after they are read in from an image analysis output file, usually by \Rfunction{read.rg()}. The \texttt{RGList\_CALIB} in this package is an extended \texttt{limma::RGList} from the \Rpackage{Limma} package.~\cite{LimmaMethod,LimmaGUI} As compared to the \texttt{limma::RGList} it contains two additional fields, \texttt{RArea} and \texttt{GArea}. These two additional fields are meant to store the spot areas, which in some cases are needed to calculate measured intenties.
+
+\item \textbf{SpikeList}: A list used to store raw measurement data of all external control spikes spotted on the arrays. An object of this class is created by \Rfunction{read.spike()}. It is a subset of the object of \texttt{RGList\_CALIB} plus two fields, \texttt{RConc} and \texttt{GConc} to indicate known concentration for the control spikes' targets added to the hybridization solution and labeled in red and green respectively.
+
+\item \textbf{ParameterList}: A list used to store parameters of the calibration model for each array. An objct of this class is created by \Rfunction{estimateParameter()}.
+
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Work flow}
+
+To load the \Rpackage{CALIB} package in your R session, type {\tt
+library(CALIB)}. In order to illustrate the workings and principles of the method and the usage of the functions in the package, we use a test set containing two out of fourteen hybridizations of a publicly available benchmark data set.~\cite{ExampleData} The experiment design of these two arrays consists of a color-flip of two conditions. The usage of the package is illustrated in this document by means of this test example. 
+
+\begin{enumerate}
+
+\item To begin, users will create a directory and move all the relevant files to that directory including:
+
+\begin{itemize}
+\item The image processing output files (e.g. \texttt{.txt} files).
+\item A file contains target (or samples) descriptions (e.g. \texttt{targets.txt} file).
+\item A file contains the IDs and other annotation information associated with each probe (e.g.\texttt{annotation.txt} file).
+\item A file specifies spot type for each of the different spots on the array (e.g. \texttt{SpotType.txt} file).
+\item A file contains concentration of each spike (e.g. \texttt{conc.txt} file).
+\end{itemize}
+
+For this illustration, the data has been gathered in the data directory {\texttt
+/arraydata}.
+
+\item  Start R in the desired working directory and load the \Rpackage{CALIB} package.
+%code 1
+<<>>=
+library(CALIB)
+path<-system.file("arraydata", package="CALIB")
+dir(system.file("arraydata", package="CALIB")) 
+@
+
+\item {\bf Data input:} Read in the target file containing
+information about the hybridization.
+%code 2
+<<>>=
+datapath <- system.file("arraydata", package="CALIB")
+targets <- readTargets("targets.txt",path=datapath)
+targets
+@
+
+\item  Read in the raw fluorescent intensities data, by default we assume
+that the file names are provided in the {\bf first} column of the target
+file with the column name of {\bf FileName}.
+%code 3
+<<>>=
+RG <- read.rg(targets$FileName,columns=list(Rf="CH1_NBC_INT",Gf="CH2_NBC_INT",Rb="CH1_SPOT_BKGD",Gb="CH2_SPOT_BKGD",RArea="CH1_SPOT_AREA",GArea="CH2_SPOT_AREA"),path=datapath)
+@
+
+\item  Read in the probe annotation information.
+%code 4
+<<>>=
+filename <- "annotation.txt"
+fullname <- file.path(datapath,filename)
+annotation <- read.table(file=fullname,header=T,fill=T,quote="",sep="\t")
+RG$genes <- annotation
+@
+
+\item  Read in the spot type information.
+%code 5
+<<>>=
+types<-readSpotTypes(path=datapath)
+types
+spotstatus<-controlStatus(types,RG$genes)
+RG$genes$Status<-spotstatus
+@
+
+\item  Read in concentration of spikes.
+%code 6
+<<>>=
+concfile<-"conc.txt"
+spike<-read.spike(RG,file=concfile,path=datapath)
+@
+
+\item {\bf Spike quality assessment:} the following command generates     diagnostic plots for a assessment of spike quality.
+%code 7
+<<spikeci,fig=TRUE,prefix=FALSE,include=FALSE>>=
+arraynum <- 1
+plotSpikeCI(spike,array=arraynum)
+@
+
+\begin{figure}
+\centering
+\includegraphics[width=3in,height=3in,angle=0]{spikeci}
+\caption{Assessment of spike quality}
+\protect \label{fig:sci}
+\end{figure}
+
+From Figure~\ref{fig:sci} a sigmoidal relationship between the measured intensities and added concentrations is to be expected. Indeed, in a certain range the relationship will be linear, but at the highest and lowest concentration levels saturation effects will occur, which might be different for the red and green channel.
+
+\item {\bf Parameter Estimation:} estimate calibration model parameters array by array.
+%code 8
+<<>>=
+parameter<-estimateParameter(spike,RG,bc=F,area=T,errormodel="M")
+@
+
+\item  Generate diagnostics and visualization for the calibration models.
+%code 9 
+<<spikehi,fig=TRUE,prefix=FALSE,include=FALSE>>=
+plotSpikeHI(spike,parameter,array=arraynum)
+@
+
+\begin{figure}
+\centering
+\includegraphics[width=3in,height=3in,angle=0]{spikehi}
+\caption{Estimated calibration model parameters}
+\protect \label{fig:shi}
+\end{figure}
+
+In Figure~\ref{fig:shi}, the red and green curves represent the estimated calibration models for the red and green channel respectively. In general, the more tight and smooth (no visible artifacts) the black dots fit the model curves, the more suitable the model is for further normalization.
+ 
+\item  {\bf Normalization:} Once the calibration models for the red and green channels have been estimated for each array, they can be used to normalize the data. Absolute expression levels for each combination of a gene and condition in the experiment design, regardless of the number of replicates. Experimental design of arrays is specified by three equal length vectors \textit{array},\textit{condition} and \textit{dye}.
+
+%code 10
+<<>>=
+array<-c(1,1,2,2)
+condition<-c(1,2,2,1)
+dye<-c(1,2,1,2)
+idcol<-"CLONE_ID"
+## here, we normalize the first ten genes as example.
+cloneid<-RG$genes[1:10,idcol]
+normdata<-normalizeData(RG,parameter,array,condition,dye,idcol=idcol,cloneid=cloneid)
+normdata
+@
+
+\end{enumerate}
+
+\begin{thebibliography}{4}
+
+\bibitem{CalibMethod}
+Engelen,K., Naudts,B.,DeMoor,B. and Marchal,K. \newblock A calibration method for estimating absolute expression levels from microarray data. \newblock \textit{Bioinformatics} 22, 1251-1258 (2006).
+
+\bibitem{LimmaMethod}
+Symth,G.K. \newblock Linear models and empirical bayes methods for assessing differential expression in microarray experiments. \newblock \textit{Stat. Appl. Genet. Mol. Biol.} 3,Ariticle3 (2004).
+
+\bibitem{LimmaGUI}
+Wettenhall,J.M. and Symth,G.K. \newblock limmaGUI: a graphical user interface for linear modeling of microarray data. \newblock \textit{Bioinformatics} 20, 3705-3706 (2004).
+
+\bibitem{ExampleData}
+Hilson,P. \textit{et al.} \newblock Versatile gene-specific sequence tags for Arabidopsis functional genomics: transcript profiling and reverse genetics applications. \newblock \textit{Genome Res.} 14, 2176-2189 (2004).
+
+\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\textbf Note:} This document was generated using the \Rfunction{Sweave}
+function from the R \Rpackage{tools} package. The source file is in the
+\Rfunction{/doc} directory of the package \Rpackage{CALIB}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+ 
+
+

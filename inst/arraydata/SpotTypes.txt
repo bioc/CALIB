@@ -1,0 +1,6 @@
+SpotType	SOURCE_CLONE_ID	ORIGIN	Color
+cDNA	CATMA*	*	black
+Ratio	rYIR*	APB	orange
+Calibration	cYIR*	APB	red
+Negative	nYIR*	APB	blue
+Utility	uYIR*	APB	green
