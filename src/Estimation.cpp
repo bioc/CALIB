@@ -19,7 +19,7 @@ extern "C" {
 SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinten,SEXP errormodel,SEXP mus)
 {
 	double *xint1,*xint2,*xconc1,*xconc2,*xmax,*xgivenmus;
-	char *xerrormodel;
+	const char *xerrormodel;
 	
 	xint1 = REAL(int1);
 	xint2 = REAL(int2);
@@ -372,7 +372,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 	double *xint1;
 	double *xint2;
 	int *xdim;
-	char *xerrormodel;
+	const char *xerrormodel;
 
 	xint1 = REAL(int1);
 	xint2 = REAL(int2);

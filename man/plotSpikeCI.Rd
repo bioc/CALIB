@@ -92,7 +92,7 @@ plotSpikeCI(spike, parameter,array = 1, bc = FALSE, area = TRUE,
 
 \author{ Hui Zhao}
 
-\seealso{ see graphic functions \code{\link[graphics]{plot}}, \code{\link[graphics]{par}}}}
+\seealso{ see graphic functions \code{\link[graphics]{plot}}, \code{\link[graphics]{par}}}
 
 \examples{
 # load data: spike
