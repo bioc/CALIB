@@ -571,6 +571,8 @@ estimateParameter<-function(spike,RG,bc=FALSE,area=TRUE,errormodel="M")
 
       }
    }
+   SRinten <- pmax(SRinten, 0.5, na.rm=TRUE)
+   SGinten <- pmax(SGinten, 0.5, na.rm=TRUE)
    SRconc <- spike$RConc
    SGconc <- spike$GConc
    meaninten <- max(log10(mean(Rinten)),log10(mean(Ginten)))
@@ -845,6 +847,10 @@ normalizeData<-function(RG,parameter,array=array,condition=condition,dye=dye,clo
    if (NA %in% cloneid)
    {
       stop("Clone ID should not contain NA.")
+   }
+   if ("" %in% cloneid)
+   {
+      stop("Clone ID should not be empty.")
    } 
    larray <- length(array)
    lcond <- length(condition)
@@ -902,7 +908,9 @@ normalizeData<-function(RG,parameter,array=array,condition=condition,dye=dye,clo
       Rinten <- as.matrix(Rinten)
       Ginten <- as.matrix(Ginten)
    }
-   
+   Rinten <- pmax(Rinten, 0.5, rm.na = TRUE)
+   Ginten <- pmax(Ginten, 0.5, rm.na = TRUE)
+
    if (length(cloneid) < 2)
    {
       dimension <- c(1,arraynum)

@@ -1,4 +1,4 @@
-\name{subset}
+\name{subsetting}
 \alias{[.RGList_CALIB}
 \alias{[.SpikeList}
 \alias{[.ParameterList}
@@ -9,7 +9,7 @@
 }
 
 \usage{
- object[i,j]
+ \method{[}{RGList_CALIB}(object, i, j, \ldots)
 }
 
 \arguments{
@@ -17,6 +17,8 @@
   \item{object}{ an object of class \code{RGList_CALIB} or \code{SpikeList}.}
   \item{i,j}{subscripts. \code{i} is the subscripts of the spots 
              and \code{j} is the subscripts of the arrays.}
+  \item{\ldots}{not used}
+
 }
 
 \details{
