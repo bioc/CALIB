@@ -21,7 +21,7 @@ calibReadMe(view = TRUE)
 
  If the operating system is other than Windows, then the PDF
  viewer used is the one given by \code{Sys.getenv("R\_PDFVIEWER")}. 
- The PDF viewer can be changed using \code{Sys.putenv(R_\PDFVIEWER=)}.
+ The PDF viewer can be changed using \code{Sys.putenv("R\_PDFVIEWER")}.
 }
 \value{
 Character string giving the file location.
