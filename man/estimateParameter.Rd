@@ -36,7 +36,7 @@
   based on the measured intensities of the external control spikes and 
   their known concentration in the hybridization solution. It accepts 
   spike measured intensities and concentration from \code{spike} argument, 
-  which is an object of \code{\link[CALIB:spikelist]{SpikeList}} class. 
+  which is an object of \code{\link[CALIB:SpikeList-class]{SpikeList}} class. 
 
   It supports different ways to calculate the measured intensities. 
   Arguments \code{bc} and \code{area} are logical and their combinations is used 

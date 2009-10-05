@@ -22,8 +22,8 @@
 }
 
 \details{
-  \code{i},\code{j} may take any values acceptable for the matrix components of \code{object}.
-  see the \code{\link[base]{exact}} in the base package for more details. 
+  \code{i},\code{j} may take any values acceptable for the matrix
+components of \code{object}. 
 }
 
 \value{
@@ -36,9 +36,7 @@
 \author{ Hui Zhao}
 
 \seealso{ 
-  \code{\link[base]{exact}} in the base package
-
-  \code{\link[limma]{subsetting}} in the limma package
+   \code{\link[limma]{subsetting}} in the limma package
 }
 
 \examples{

@@ -52,7 +52,7 @@ plotNormalizedData(data, condition = c(1, 2), xlab = NULL, ylab = NULL,
 \details{
   The function polts estimated absolute expression levels of two conditions. It accepts
   expression levels from the argument 'data', which should have the same data format as 
-  the output value of the function \code{\link[CALIB:normalizedata]{NormalizeData}}.
+  the output value of the function \code{\link[CALIB]{normalizeData}}.
 
   The two conditions to be plotted should be specified by the argument \code{condition}. 
   The \code{condition} should be a numeric vector with length two and it should be subset

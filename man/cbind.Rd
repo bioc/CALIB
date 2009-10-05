@@ -38,9 +38,10 @@
   rbinded while the target information, in any, is unchanged.
 }
 \value{
-  An \code{\link[CALIB:rglist_CALIB]{RGList_CAILB}}, a \code{\link[CALIB:spikelist]{SpikeList}} or 
-  a \code{\link[CALIB:parameterlist]{ParameterList}} object holding data from 
-  all the arrays and all genes from the individual objects.
+  An \code{\link[CALIB:RGList_CALIB-class]{RGList_CAILB}}, a
+  \code{\link[CALIB:SpikeList-class]{SpikeList}} or  
+  a \code{\link[CALIB:ParameterList-class]{ParameterList}} object
+  holding data from all the arrays and all genes from the individual objects.
 }
 \references{ \code{\link[limma]{cbind}} in limma package}
 \author{ Hui Zhao}

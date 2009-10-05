@@ -17,13 +17,15 @@ plotSpikeRG(spike,parameter,RG,array = 1, bc = FALSE, area = TRUE,
 }
 
 \arguments{
-  \item{spike}{ a \code{\link[CALIB:spikelist]{SpikeList}} object.}
+  \item{spike}{ a \code{\link[CALIB:SpikeList-class]{SpikeList}} object.}
   
-  \item{parameter}{a \code{\link[CALIB:parameterlist]{ParameterList} object.}.
+  \item{parameter}{a
+    \code{\link[CALIB:ParameterList-class]{ParameterList} object.}. 
        If \code{parameter} argument is sepcified, model curves are shown on the plot. }
 
-  \item{RG}{a \code{\link[CALIB:RGList_CALIB]{RGList_CALIB} object}. If \code{parameter}
-       argument is specified, this argument is obligated. More description in Detail section.}
+  \item{RG}{a \code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}
+      object}. If \code{parameter} argument is specified, this argument
+    is obligated. More description in Detail section.}
 
   \item{array}{ integer giving the array to be plotted. }
 

@@ -5,9 +5,9 @@
 
 \title{ Class "SpikeList" - Spike Intensity and Concentration List }
 
-\description{ A simple list-based class for storing red and green channel foreground and
-      background intensities, spot area and concentrations for external control spike on
-      spotted microarray. }
+\description{ A simple list-based class for storing red and green
+  channel foreground and background intensities, spot area and
+  concentrations for external control spike on spotted microarray. }
 
 \section{Objects from the Class}{
    Objects can be created by calls of the form \code{new("SpikeList", spike)} where spike
@@ -59,13 +59,16 @@ This class inherits directly from class List, so any operation appropriate
 for lists will work on objects of this class. In addition, SpikeList objects
 can be \code{\link[CALIB:subsetting]{subsetted}}, \code{\link[CALIB:cbind]{combined}}
 and \code{\link[CALIB:merge]{merged}}. SpikeList objects will return dimensions and
-hence functions such as \code{\link[CALIB:dim]{dim}}, \code{\link[CALIB:dimnames]{dimnames}},
-\code{\link[base:nrow]{nrow}} and \code{\link[base:ncol]{ncol}} are defined.
+hence functions such as \code{\link[CALIB:dim]{dim}},
+\code{\link[CALIB]{dimnames}},
+\code{\link[base:nrow]{nrow}} and \code{\link[base:nrow]{ncol}} are defined.
 Generic method \code{\link[methods]{show}} is applied on \code{SpikeList},
 so SpikeList will print in a compact way.
 
-SpikeList objects are used on functions such as \code{\link{estimateParameter}} or on some
-other data visualization functions like \code{\link{plotSpikeHI}} in the CALIB package.         
+SpikeList objects are used on functions such as
+\code{\link{estimateParameter}} or on some other data visualization
+functions like \code{\link{plotSpikeHI}} in the CALIB package.
+
 }
 
 \references{ the limma package}
@@ -73,7 +76,7 @@ other data visualization functions like \code{\link{plotSpikeHI}} in the CALIB p
 \author{ Hui Zhao}
 
 \seealso{
-\code{\link[CALIB:rglist_CAILB]{RGList_CALIB}}.
+\code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}}.
 
 \code{\link[limma:rglist]{RGList}} in limma package. 
 }

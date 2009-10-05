@@ -5,9 +5,11 @@
 \title{ Calibration Model parameter: ParameterList Example }
 
 \description{
-This \code{\link[CALIB:parameterlist]{ParameterList}} object represents calibration 
-model parameters of two arrays. It was estimated from the dataset \code{\link[CALIB:spike]{spike}}
-by the function \code{\link[CALIB:estimateparameter]{estimateParameter}} in the CALIB package. 
+This \code{\link[CALIB:ParameterList-class]{ParameterList}} object
+represents calibration  
+model parameters of two arrays. It was estimated from the dataset
+\code{\link{spike}} 
+by the function \code{\link{estimateParameter}} in the CALIB package. 
 }
 
 \usage{data(parameter)}

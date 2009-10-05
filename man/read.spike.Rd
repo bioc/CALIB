@@ -13,7 +13,7 @@ read.spike(RG, file = NULL, path = NULL, ext = NULL, sep = "\t", conccol,
 }
 
 \arguments{
-  \item{RG}{ a \code{\link[CALIB:rglist_CALIB]{RGList_CALIB}} object.}
+  \item{RG}{ a \code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}} object.}
 
   \item{file}{ character string giving the name of the concentration file.}
 
@@ -36,7 +36,7 @@ read.spike(RG, file = NULL, path = NULL, ext = NULL, sep = "\t", conccol,
         \code{FALSE} means that different arrays use the same spike and only one 
         concentration file is needed. Default is \code{FALSE}.}
 
-  \item{\dots}{ any other arguments are passed to \code{\link[base]{read.table}}. }
+  \item{\dots}{ any other arguments are passed to \code{\link[utils]{read.table}}. }
 }
 
 \details{
@@ -56,7 +56,7 @@ read.spike(RG, file = NULL, path = NULL, ext = NULL, sep = "\t", conccol,
 }
 
 \value{
-  An \code{\link[CALIB:spikelist]{SpikeList}} object containing the components
+  An \code{\link[CALIB:SpikeList-class]{SpikeList}} object containing the components
  
   \item{R}{ matrix containing the red channel foreground intensities for
         each spot for each array.}

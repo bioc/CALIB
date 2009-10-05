@@ -13,9 +13,10 @@ normalizeData(RG, parameter, array = array, condition = condition, dye = dye,
 }
 
 \arguments{
-  \item{RG}{ an \code{\link[CALIB:rglist_CALIB]{RGList_CALIB}} object}
-
-  \item{parameter}{ a \code{\link[CALIB:parameterlist]{ParameterList}} object}
+  \item{RG}{ an \code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}} object}
+ 
+  \item{parameter}{ a
+    \code{\link[CALIB:ParameterList-class]{ParameterList}} object} 
 
   \item{array}{ integer vector specifying the index of the arrays. 
         Has length equal to two times of the number of arrays. }

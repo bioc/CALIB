@@ -13,7 +13,8 @@ plotSpikeSpotError(parameter, array = 1, plottype = "hist", width = 1,
 }
 
 \arguments{
-  \item{parameter}{ a \code{\link[CALIB:parameterlist]{ParameterList}} object.}
+  \item{parameter}{ a
+    \code{\link[CALIB:ParameterList-class]{ParameterList}} object.} 
 
   \item{array}{integer giving the array to be plotted. }
 

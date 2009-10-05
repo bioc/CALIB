@@ -28,7 +28,7 @@
   ordinary matrices.
 
   A consequence is that row and column commands \code{\link[base:nrow]{nrow(x)}},
-  \code{\link[base:ncol]{ncol(x)}} and so on also work.
+  \code{\link[base:nrow]{ncol(x)}} and so on also work.
 }
 
 \value{

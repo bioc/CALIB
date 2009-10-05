@@ -61,7 +61,8 @@ read.rg(files = NULL, source = "generic", path = NULL, ext = NULL,
          and selected columns in a colClasses format for read.table 
          will be displayed.}
 
-  \item{\dots}{ any other arguments are passed to \code{\link[base]{read.table}}.}
+  \item{\dots}{ any other arguments are passed to
+    \code{\link[utils]{read.table}}.} 
 
 }
 
@@ -75,7 +76,8 @@ read.rg(files = NULL, source = "generic", path = NULL, ext = NULL,
 }
 
 \value{
-  An \code{\link[CALIB:rglist_CALIB]{RGList_CALIB}} object containing the components
+  An \code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}} object
+  containing the components 
  
   \item{R}{ matrix containing the red channel foreground intensities for
         each spot for each array.}
@@ -116,7 +118,7 @@ read.rg(files = NULL, source = "generic", path = NULL, ext = NULL,
 
 \author{ Hui Zhao}
 
-\seealso{ 'read.rg' is based on \code{\link[base]{read.table}} in the base package}
+\seealso{ 'read.rg' is based on \code{\link[utils]{read.table}} in the base package}
 
 \examples{
 

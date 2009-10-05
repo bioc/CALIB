@@ -25,7 +25,8 @@
 }
 
 \details{
-  \code{\link[CALIB:rglist_CALIB]{RGList_CALIB}} and \code{\link[CALIB:spikelist]{SpikeList}} 
+  \code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}} and
+  \code{\link[CALIB:SpikeList-class]{SpikeList}}  
   objects are list objects containing numeric matrices with the same dimensions. 
   The RGLists\_CALIB or SpikeLists are merged by merging each of the components by row 
   names or, if there are no row names, by IDs in the \code{genes} component. Unlike

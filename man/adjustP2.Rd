@@ -16,17 +16,17 @@ adjustP2(RG, parameter, arrayindex = arrayindex, colorindex = colorindex)
   \item{colorindex}{ integer vector specifying which color needed to be adjusted.}
 }
 \details{
-\code{RG} is an \code{\link[CALIB:rglist_CALIb]{RGList_CALIB}} object which contains all the
+\code{RG} is an \code{\link[CALIB:RGList_CALIB-class]{RGList_CALIB}} object which contains all the
 experimental data. 
-\code{parameter} is the return result of function \code{\link[CALIB:estimateParameter]{estimateParameter}.}
+\code{parameter} is the return result of function \code{\link[CALIB]{estimateParameter}.}
 \code{arrayindex} is an integer vector. It gives the index of the arrays whose P2 is 
 needed to be adjusted.
 \code{colorindex} is an integer vector. It gives the color needed to be adjusted.
 \code{1} means red P2 and \code{2} means green P2. 
 }
 \value{
- It returns a \code{\link[CALIB:parameterlist]{ParameterList}} object with a adjusted
-P2 compared to the input argument \code{parameter}. 
+ It returns a \code{\link[CALIB:ParameterList-class]{ParameterList}}
+ object with a adjusted P2 compared to the input argument \code{parameter}. 
 }
 \note{
 The user should decide on which array and which color the adjustment is needed.

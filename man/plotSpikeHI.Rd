@@ -17,9 +17,9 @@ plotSpikeHI(spike, parameter, array = 1, xlab = "log(Hybridized)",
 }
 
 \arguments{
-  \item{spike}{ a \code{\link[CALIB:spikelist]{SpikeList}} object.}
+  \item{spike}{ a \code{\link[CALIB:SpikeList-class]{SpikeList}} object.}
 
-  \item{parameter}{ a \code{\link[CALIB:parameterlist]{ParameterList}} object.}
+  \item{parameter}{ a \code{\link[CALIB:ParameterList-class]{ParameterList}} object.}
 
   \item{array}{ integer giving the array to be plotted. }
 

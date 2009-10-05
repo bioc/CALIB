@@ -61,18 +61,22 @@ Class \code{"vector"}, by class \code{"list"}.
 }
 
 \section{Methods}{
-This class inherits directly from class List so any operation appropriate for lists will
-work on objects of this class. In addition, RGList\_CALIB objects can be \code{\link[CALIB:subsetting]{subsetted}},
-\code{\link[CALIB:cbind]{combined}} and \code{\link[CALIB:merge]{merged}}. RGList\_CALIB objects
-will return dimensions and hence functions such as \code{\link[CALIB:dim]{dim}},
-\code{\link[CALIB:dimnames]{dimnames}}, \code{\link[base:nrow]{nrow}} and
-\code{\link[base:ncol]{ncol}} are defined. RGList\_CALIB also inherit a \code{\link[methods]{show}}
-method from the virtual class \code{\link[limma:LargeDataObject]{LagerDataObject}},
-which means that RGList\_CALIB objects will print in a compact way.
+This class inherits directly from class List so any operation
+appropriate for lists will work on objects of this class. In addition,
+RGList\_CALIB objects can be
+\code{\link[CALIB:subsetting]{subsetted}},
+\code{\link[CALIB:cbind]{combined}} and
+\code{\link[CALIB]{merge}}. RGList\_CALIB objects will return dimensions
+and hence functions such as \code{\link[CALIB:dim]{dim}},
+\code{\link[CALIB:dimnames]{dimnames}}, \code{\link[base:nrow]{nrow}}
+and \code{\link[base:nrow]{ncol}} are defined. RGList\_CALIB also
+inherit a \code{\link[methods]{show}} method from the virtual class
+\code{\link[limma:LargeDataObject]{LagerDataObject}}, which means that
+RGList\_CALIB objects will print in a compact way.
 
-In the CALIB package, RGList\_CALIB objects are mainly for storing microarray data and they are
-used to pass microarray data into functions such as \code{\link[CALIB:estimateparameter]{estimateParameter}}
-or \code{\link[CALIB:normalizedata]{normalizeData}}. 
+In the CALIB package, RGList\_CALIB objects are mainly for storing
+microarray data and they are used to pass microarray data into functions such as
+\code{\link[CALIB]{estimateParameter}} or \code{\link[CALIB]{normalizeData}}. 
 }
 
 \references{ \code{RGList} in the limma package}
@@ -80,7 +84,8 @@ or \code{\link[CALIB:normalizedata]{normalizeData}}.
 \author{ Hui Zhao}
 
 \seealso{
-\code{\link[limma]{RGList}} and \code{\link[limma]{LargeDataObject}} in limma packge.
+\code{\link[limma:rglist]{RGList}} and
+\code{\link[limma]{LargeDataObject}} in limma packge. 
 }
 
 \keyword{classes}
