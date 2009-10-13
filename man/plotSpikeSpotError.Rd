@@ -53,7 +53,7 @@ plotSpikeSpotError(parameter, array = 1, plottype = "hist", width = 1,
 \code{\link[graphics]{hist}}, \code{\link[graphics]{boxplot}}
 and \code{\link[graphics]{plot}} in the graphics package.
 
-\code{\link[stat]{density}} in the stat package.}
+\code{\link[stats]{density}} in the stats package.}
 
 \examples{
 # load data: parameter
