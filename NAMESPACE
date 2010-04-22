@@ -1,0 +1,12 @@
+useDynLib(CALIB)
+
+import(methods)
+importFrom(limma, getLayout, makeUnique, printHead, protectMetachar,
+           read.imagene, readGPRHeader, readSMDHeader, removeExt)
+importFrom(graphics, abline, boxplot, curve, hist, plot, points)
+importFrom(stats, density, median)
+importFrom(utils, read.table)
+
+exportClasses(RGList_CALIB, SpikeList, ParameterList)
+exportPattern("^[^\\.]")
+exportMethods(show)
