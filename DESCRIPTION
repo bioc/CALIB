@@ -2,7 +2,7 @@ Package: CALIB
 Type: Package
 Title: Calibration model for estimating absolute expression 
        levels from microarray data 
-Version: 1.36.0
+Version: 1.37.0
 Date: 2006-06-22
 Author: Hui Zhao, Kristof Engelen, Bart De Moor and Kathleen Marchal
 Maintainer: Hui Zhao <hui.zhao@biw.kuleuven.be>
