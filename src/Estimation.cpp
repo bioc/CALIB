@@ -7,20 +7,23 @@
 
 using namespace std;
 
-//#ifdef __cplusplus
-extern "C" {
-//#endif
+
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
 #include <R_ext/Rdynload.h>
 
 
+//#ifdef __cplusplus
+extern "C" {
+//#endif
+
+
 SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinten,SEXP errormodel,SEXP mus)
 {
 	double *xint1,*xint2,*xconc1,*xconc2,*xmax,*xgivenmus;
 	const char *xerrormodel;
-	
+
 	xint1 = REAL(int1);
 	xint2 = REAL(int2);
 	xconc1 = REAL(conc1);
@@ -40,20 +43,20 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	SpikeofOneArray spikeofone;
 
 	int i = 0;
-	char *tmp; 
+	char *tmp;
 
 	// spot type: string vector
 	for (i=0;i<len;i++)
-	{	
+	{
 		tmp = R_alloc(strlen(CHAR(STRING_ELT(type,i))),sizeof(char));
 		strcpy(tmp,CHAR(STRING_ELT(type,i)));
 		spottype.push_back(tmp);
 	}
 
 	// set all the values.
-	
-	spikeofone.setSpikes(conca,concb,inta,intb,spottype); 
-	
+
+	spikeofone.setSpikes(conca,concb,inta,intb,spottype);
+
 	//define the variables used in estimating procedure.
 	ParameterofOneArray parameterofone;
 	Spike negative;
@@ -81,7 +84,7 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	// estimation begins:
 	// select negative spikes of one array
 	negative = spikeofone.selectSpikes("Negative");
-		
+
 	//get intensities of each color of negative spikes
 	negcol1inten = spikeofone.getCol1Inten(negative);
 	negcol2inten = spikeofone.getCol2Inten(negative);
@@ -90,9 +93,9 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	addvar1 = spikeofone.calculateAdditiveVariance(negcol1inten);
 	addvar2 = spikeofone.calculateAdditiveVariance(negcol2inten);
 
-	// calculate p2 = MuAddtive 
-	addmean1 = spikeofone.calculateAdditiveMean(negcol1inten); 
-	addmean2 = spikeofone.calculateAdditiveMean(negcol2inten); 
+	// calculate p2 = MuAddtive
+	addmean1 = spikeofone.calculateAdditiveMean(negcol1inten);
+	addmean2 = spikeofone.calculateAdditiveMean(negcol2inten);
 
 	//select calibration spikes of one array
 	calibration = spikeofone.selectSpikes("Calibration");
@@ -102,7 +105,7 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	calcol2inten = spikeofone.getCol2Inten(calibration);
 	calcol1conc = spikeofone.getCol1Conc(calibration);
 	calcol2conc = spikeofone.getCol2Conc(calibration);
-	
+
 	//calculate multiplicative error for each color by using calibration spikes
 	mulvar = spikeofone.calculateMultiplicativeVariance(calcol1inten,calcol2inten);
 	mulvar1 = 1/1.414214 * mulvar;
@@ -113,16 +116,16 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	// data set: all spikes except for negative controls
 	dataset = spikeofone.kickoutNegatives("Negative");
 
-	// get the intensities and concentrations of each color 
+	// get the intensities and concentrations of each color
 	d1inten = spikeofone.getCol1Inten(dataset);
 	d2inten = spikeofone.getCol2Inten(dataset);
 	d1conc = spikeofone.getCol1Conc(dataset);
 	d2conc = spikeofone.getCol2Conc(dataset);
-	sid = spikeofone.getArrayID(); 
+	sid = spikeofone.getArrayID();
 
 	//================================= parameter estimation ===================================
 
-	parameterofone.setArrayID(sid); 
+	parameterofone.setArrayID(sid);
 	parameterofone.setMuSpot(*xgivenmus);
 	parameterofone.setP2Col1(addmean1);
 	parameterofone.setP2Col2(addmean2);
@@ -134,7 +137,7 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	//parameterofone.setCoarseKa(calcol1inten,calcol2inten,calcol1conc,calcol2conc);
 	parameterofone.setFineKa(d1inten,d2inten,d1conc,d2conc,*xerrormodel);
 	parameterofone.calculateP1(d1inten,d2inten,d1conc,d2conc,*xerrormodel);
-	parameterofone.calculateSigmaSpot(); 
+	parameterofone.calculateSigmaSpot();
 
 	// estimation ends.
 
@@ -143,7 +146,7 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	SEXP parlist, parlistname,parmus,parka,parp1,parp2,parsigmaa,parsigmam,parsigmas,parspoterror;
 	char *name[8] = {"MuS","Ka","P1","P2","SigmaA","SigmaM","SigmaS","SpotError"};
 	double *xmus,*xka,*xp1,*xp2,*xsigmaa,*xsigmam,*xsigmas,*xspoterror;
-	
+
 
 	// element "MuS"(numeric) in the list:
 	PROTECT(parmus = allocVector(REALSXP,1));
@@ -171,7 +174,7 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	// element "SigmaA" (two numerics) in the list:
 	PROTECT(parsigmaa = allocVector(REALSXP,2));
 	xsigmaa = REAL(parsigmaa);
-	xsigmaa[0] = parameterofone.getSigmaAddCol1(); 
+	xsigmaa[0] = parameterofone.getSigmaAddCol1();
 	xsigmaa[1] = parameterofone.getSigmaAddCol2();
 
 	// element "SigmaM" (two numerics) in the list:
@@ -183,7 +186,7 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	// element "SigmaS" (two numerics) in the list:
 	PROTECT(parsigmas = allocVector(REALSXP,1));
 	xsigmas = REAL(parsigmas);
-	xsigmas[0] = parameterofone.getSigmaSpot(); 
+	xsigmas[0] = parameterofone.getSigmaSpot();
 
 	// element "SpotError" (n numerics) in the list:
 	vector <double> error;
@@ -196,16 +199,16 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	{
 		xspoterror[i] = error[i];
 	}
-	
+
 	// names of each list element:
 	PROTECT(parlistname = allocVector(STRSXP,8));
 	for(i=0;i<8;i++)
 	{
-		SET_STRING_ELT(parlistname,i,mkChar(name[i])); 
+		SET_STRING_ELT(parlistname,i,mkChar(name[i]));
 	}
 
 	// set each element into the list:
-	PROTECT(parlist = allocVector(VECSXP, 8)); 
+	PROTECT(parlist = allocVector(VECSXP, 8));
     SET_VECTOR_ELT(parlist, 0, parmus);
 	SET_VECTOR_ELT(parlist, 1, parka);
 	SET_VECTOR_ELT(parlist, 2, parp1);
@@ -213,11 +216,11 @@ SEXP estimation(SEXP int1,SEXP int2,SEXP conc1,SEXP conc2,SEXP type,SEXP maxinte
 	SET_VECTOR_ELT(parlist, 4, parsigmaa);
 	SET_VECTOR_ELT(parlist, 5, parsigmam);
 	SET_VECTOR_ELT(parlist, 6, parsigmas);
-	SET_VECTOR_ELT(parlist, 7, parspoterror);	
-	setAttrib(parlist, R_NamesSymbol, parlistname); 
+	SET_VECTOR_ELT(parlist, 7, parspoterror);
+	setAttrib(parlist, R_NamesSymbol, parlistname);
 
 	UNPROTECT(10);
-	return(parlist);	
+	return(parlist);
 }
 
 vector <ParameterofOneArray> readinparlist(SEXP parlist, int ncol)
@@ -234,7 +237,7 @@ vector <ParameterofOneArray> readinparlist(SEXP parlist, int ncol)
 	{
 		if (strcmp(CHAR(STRING_ELT(names,i)),"MuS") == 0)
 		{
-			parmus = VECTOR_ELT(parlist,i);		
+			parmus = VECTOR_ELT(parlist,i);
 		}
 
 		if (strcmp(CHAR(STRING_ELT(names,i)),"Ka") == 0)
@@ -315,7 +318,7 @@ SEXP adjustment(SEXP int1,SEXP int2,SEXP parlist,SEXP whichcolor)
 
 	double *xint1,*xint2;
 	int *xwhich;
-	
+
 	xint1 = REAL(int1);
 	xint2 = REAL(int2);
 	xwhich = INTEGER(whichcolor);
@@ -344,15 +347,15 @@ SEXP adjustment(SEXP int1,SEXP int2,SEXP parlist,SEXP whichcolor)
 
 	if (*xwhich == 1)
 	{
-		newp2 = rawofone.adjustCy3(parameterofone); 
+		newp2 = rawofone.adjustCy3(parameterofone);
 	}else
 	{
 		if (*xwhich == 2)
 		{
-			newp2 = rawofone.adjustCy5(parameterofone); 
+			newp2 = rawofone.adjustCy5(parameterofone);
 		}
 	}
-	
+
     SEXP result;
 
 	PROTECT(result = allocVector(REALSXP, 1));
@@ -362,8 +365,8 @@ SEXP adjustment(SEXP int1,SEXP int2,SEXP parlist,SEXP whichcolor)
 	UNPROTECT(1);
 
 	return(result);
-	
-}	
+
+}
 
 SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP designc,SEXP designd,SEXP parlist,SEXP errormodel)
 {
@@ -389,11 +392,11 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 
 	int len_cloneid = nrow;
 
-	vector <string> cloneid; 
+	vector <string> cloneid;
 	char* tmp;  // temperary variable for clone id vector.
 
 	for (i=0;i<len_cloneid;i++)
-	{	
+	{
 		tmp = R_alloc(strlen(CHAR(STRING_ELT(id,i))),sizeof(char));
 		strcpy(tmp,CHAR(STRING_ELT(id,i)));
 		cloneid.push_back(tmp);
@@ -413,14 +416,14 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 		rawofone.setCloneID(cloneid);
 		rawofone.setRawData(inten1,inten2);
 
-		rawdata.push_back(rawofone); 
+		rawdata.push_back(rawofone);
 
 		xint1 += nrow;
 		xint2 += nrow;
 	}
 
 	// read parameters. parameters are given by a list.
-	
+
 	vector <ParameterofOneArray> parameters;
 
 	parameters = readinparlist(parlist,ncol);
@@ -449,7 +452,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 	// find out design block from design matrix.
 
 	vector <Design> des_block;
-	des_block = des.splitBlock(des); 
+	des_block = des.splitBlock(des);
 
 	// normalize data block by block.
 
@@ -457,18 +460,18 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 
 	Design block;
 	NormalizedData ndata;
-	
+
 	vector <RawDataofOneArray> rawdataofoneblock;
 	vector <NDataofOneGene> normalizeddata;
 	vector <int> condition;
-	
+
 	while (pdes_block!=des_block.end())
 	{
 		block = *pdes_block;
 
-		rawdataofoneblock = rawofone.selectBlockData(rawdata,block); 
+		rawdataofoneblock = rawofone.selectBlockData(rawdata,block);
 
-		vector <RawDataofOneArray>::iterator prawofblock = rawdataofoneblock.begin(); 
+		vector <RawDataofOneArray>::iterator prawofblock = rawdataofoneblock.begin();
 		size_t size = rawdataofoneblock.size();
 
 		ndata.setCloneID(*prawofblock);
@@ -477,7 +480,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 		vector <NDataofOneGene> tmpndata;
 		vector <int> tmpcond;
 
-		tmpndata = ndata.getData(); 
+		tmpndata = ndata.getData();
 		tmpcond = ndata.getCondition();
 
 		copy(tmpndata.begin(),tmpndata.end(),back_inserter(normalizeddata));
@@ -485,7 +488,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 
 		pdes_block++;
 	}
-	
+
 	// output the result:
 
 	int rnrow = 0;
@@ -508,7 +511,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 	for (i=0;i<rnrow;i++)
 	{
 		dataofoneclone = normalizeddata[i];
-		
+
 		for (j=0;j<rncol;j++)
 		{
 			REAL(result)[i+rnrow*j] = dataofoneclone.Conc[j];
@@ -525,7 +528,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 	// dimension name.
 	SEXP dimnames_row;
 	SEXP dimnames_col;
-	
+
 	vector <string>::iterator pcloneid = result_cloneid.begin();
 	string tmp_id;
 
@@ -535,8 +538,8 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 		tmp_id = *pcloneid;
 		char *name = strdup(tmp_id.c_str());;
 		SET_STRING_ELT(dimnames_row,i,mkChar(name));
-		
-		pcloneid++;		
+
+		pcloneid++;
 	}
 
 	int *xdimnamescol;
@@ -554,7 +557,7 @@ SEXP normalization(SEXP int1,SEXP int2,SEXP dim,SEXP id,SEXP designa,SEXP design
 	setAttrib(result,R_DimNamesSymbol,dimnames);
 
 	UNPROTECT(5);
-	return(result); 
+	return(result);
 }
 
 R_CallMethodDef callMethods[] = {
